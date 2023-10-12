@@ -2,6 +2,8 @@ import * as THREE from 'three';
 import tools from './tools';
 
 const settings = {
+    BOID_COUNT: 20,
+
     VISUAL_RANGE: 0.5,
     SEPARATION_MIN_DISTANCE: 0.2,
 
@@ -139,6 +141,23 @@ class BoidEnvironment {
 
         /** @type {*} */
         this.obstacles = [];
+
+        /**
+         * @type {THREE.Object3D}
+         * @todo link mesh to this anchor or something
+         */
+        this.anchor = new THREE.Object3D();
+    }
+
+    create() {
+        let geometry = new THREE.ConeGeometry(0.1, 0.2, 8, 8);
+        let material = new THREE.MeshPhongMaterial({color: 0xaaaa00});
+
+        this.boids = [];
+
+        for (let i = 0; i < settings.BOID_COUNT ; ++i) {
+            this.boids.push(new Boid(tools.randomPoint(), geometry, material));
+        }
     }
 
     update() {
