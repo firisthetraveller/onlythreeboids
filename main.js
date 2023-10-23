@@ -31,7 +31,10 @@ scene.add(pointLight);
 
 // Scene
 // Boids
-let boidEnvironment = new BoidEnvironment();
+let yellowConeMesh = new THREE.Mesh(
+	new THREE.ConeGeometry(0.1, 0.2, 8, 8),
+	new THREE.MeshBasicMaterial({ color: 0xaaaa00 }));
+let boidEnvironment = new BoidEnvironment(yellowConeMesh);
 scene.add(boidEnvironment.anchor);
 
 // Mesh
