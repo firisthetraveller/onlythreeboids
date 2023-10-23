@@ -1,5 +1,6 @@
+import * as THREE from 'three';
+
 /**
- * 
  * @returns {THREE.Vector3} a point with x, y, z between -0.5 and 5
  */
 function randomPoint() {
@@ -7,11 +8,11 @@ function randomPoint() {
 		Math.random() - 0.5,
 		Math.random() - 0.5,
 		Math.random() - 0.5
-	).multiplyScalar(__SETTINGS__.distanceScale);
+	);
 }
 
 const api = {
-    randomPoint
+	randomPoint
 };
 
 export default api;

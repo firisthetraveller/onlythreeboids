@@ -1,10 +1,11 @@
 import * as THREE from 'three';
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { GUI } from 'dat.gui';
+
+import BoidEnvironment from './modules/boids';
 
 // Création de la scène
 let scene = new THREE.Scene();
-scene.background = new THREE.Color('lightblue');
 
 let camera = new THREE.PerspectiveCamera(
 	75,
@@ -21,19 +22,6 @@ controls.enableDamping = true;
 controls.dampingFactor = 0.1;
 controls.rotateSpeed = 0.5;
 
-function init() {
-	window.addEventListener('resize', onResize, false);
-	renderer.setSize(window.innerWidth, window.innerHeight);
-}
-
-function onResize() {
-	let width = window.innerWidth;
-	let height = window.innerHeight;
-	camera.aspect = width / height;
-	camera.updateProjectionMatrix();
-	renderer.setSize(width, height);
-}
-
 // Lights
 let ambientLight = new THREE.AmbientLight(0xFFFFFF, 1);
 scene.add(ambientLight);
@@ -42,11 +30,15 @@ let pointLight = new THREE.PointLight(0xFFFF00, 5);
 scene.add(pointLight);
 
 // Scene
+// Boids
+let boidEnvironment = new BoidEnvironment();
+scene.add(boidEnvironment.anchor);
+
 // Mesh
-const geometry = new THREE.BoxGeometry();
-const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-let mesh = new THREE.Mesh(geometry, material);
-scene.add(mesh);
+// const geometry = new THREE.BoxGeometry();
+// const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+// let mesh = new THREE.Mesh(geometry, material);
+// scene.add(mesh);
 
 // GUI
 const gui = new GUI();
@@ -72,18 +64,37 @@ cameraPositionFolder.add(camera.position, 'z', 0, 20);
 // You can open the folder by default with: folderName.open();
 // Ex: cameraPositionFolder.open();
 
-const meshFolder = gui.addFolder('Mesh');
+// const meshFolder = gui.addFolder('Mesh');
 
 // You can also add folders inside a folder.
-const meshRotationFolder = meshFolder.addFolder('Rotation');
-meshRotationFolder.add(mesh.rotation, 'x', 0, Math.PI * 2);
-meshRotationFolder.add(mesh.rotation, 'y', 0, Math.PI * 2);
-meshRotationFolder.add(mesh.rotation, 'z', 0, Math.PI * 2);
+// const meshRotationFolder = meshFolder.addFolder('Rotation');
+// meshRotationFolder.add(mesh.rotation, 'x', 0, Math.PI * 2);
+// meshRotationFolder.add(mesh.rotation, 'y', 0, Math.PI * 2);
+// meshRotationFolder.add(mesh.rotation, 'z', 0, Math.PI * 2);
+
+function init() {
+	window.addEventListener('resize', onResize, false);
+	renderer.setSize(window.innerWidth, window.innerHeight);
+
+	// Boids
+	boidEnvironment.create();
+}
+
+function onResize() {
+	let width = window.innerWidth;
+	let height = window.innerHeight;
+	camera.aspect = width / height;
+	camera.updateProjectionMatrix();
+	renderer.setSize(width, height);
+}
 
 // Create an animation loop
 const animate = () => {
 	renderer.render(scene, camera);
 	requestAnimationFrame(animate);
+
+	boidEnvironment.update();
+	boidEnvironment.render();
 };
 
 init();
