@@ -37,7 +37,8 @@ import BoidEnvironment from './<directory>/boids';
 - Add them to your scene.
 ```js
 // Boids
-let boidEnvironment = new BoidEnvironment();
+let boidMesh = new THREE.Mesh(...);
+let boidEnvironment = new BoidEnvironment(boidMesh);
 scene.add(boidEnvironment.anchor);
 ```
 
