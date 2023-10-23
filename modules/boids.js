@@ -152,12 +152,12 @@ class Boid {
 	}
 
 	render() {
-		this.mesh.position.copy(this.position);
-
-		let mx = new THREE.Matrix4().lookAt(this.movement, new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 1, 0));
+		let mx = new THREE.Matrix4().lookAt(this.position, this.movement, new THREE.Vector3(0, 0, 1));
 		let qt = new THREE.Quaternion().setFromRotationMatrix(mx);
 
 		this.mesh.quaternion.copy(qt);
+
+		this.mesh.position.copy(this.position);
 	}
 }
 
