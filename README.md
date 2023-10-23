@@ -26,4 +26,29 @@ npx vite
 After using this command, you can preview your website using the link given in the terminal.
 Other commands are available while the server is running.
 
+## Using boids as a module
+- Copy `boids.js` and `tools.js` in the same directory.
+- Write this line in your Javascript file.
+```js
+import BoidEnvironment from './<directory>/boids';
+// Replace <directory> path with the one you selected just before.
+```
 
+- Add them to your scene.
+```js
+// Boids
+let boidEnvironment = new BoidEnvironment();
+scene.add(boidEnvironment.anchor);
+```
+
+- Before starting the render loop :
+```js
+// Boids
+boidEnvironment.create();
+```
+
+- In your animation render callback :
+```js
+boidEnvironment.update();
+boidEnvironment.render();
+```
